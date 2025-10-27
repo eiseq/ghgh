@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Авторизация — BeVinil</title>
+    <link rel="stylesheet" href="login.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+            <a href="/" class="header__logo">bevinil.by</a>
+
+            <nav class="header__nav" id="navMenu">
+                <a href="/" class="header__link">Главная</a>
+                <a href="/#preorder" class="header__link">Предзаказ</a>
+                <a href="/#payment" class="header__link">Оплата</a>
+                <a href="/#delivery" class="header__link">Доставка</a>
+                <a href="/#contact" class="header__link">Контакты</a>
+                <a href="/catalog.html" class="header__link">Каталог</a>
+            </nav>
+
+            <div class="header__actions">
+                <a href="/cart.html" class="header__icon" title="Корзина">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a href="/account.html" class="header__icon" title="Личный кабинет">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <div class="header__burger" id="burgerMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="auth">
+        <div class="auth__box">
+            <h1 class="auth__title">Вход</h1>
+            <form onsubmit="event.preventDefault(); alert('Вы успешно вошли!');" class="auth__form">
+                <label>Email</label>
+                <input type="email" required placeholder="Введите ваш email">
+                <label>Пароль</label>
+                <input type="password" required placeholder="Введите пароль">
+                <button type="submit" class="auth__btn">Войти</button>
+                <p class="auth__link">Нет аккаунта? <a href="register.html">Регистрация</a></p>
+            </form>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const burger = document.getElementById('burgerMenu');
+            const nav = document.getElementById('navMenu');
+            const mobileMenu = document.createElement('div');
+
+            mobileMenu.className = 'mobile-menu';
+            mobileMenu.innerHTML = `
+    <div class="mobile-menu__close">&times;</div>
+    <a href="/" class="mobile-menu__link">Главная</a>
+    <a href="/#preorder" class="mobile-menu__link">Предзаказ</a>
+    <a href="/#payment" class="mobile-menu__link">Оплата</a>
+    <a href="/#delivery" class="mobile-menu__link">Доставка</a>
+    <a href="/#contact" class="mobile-menu__link">Контакты</a>
+    <a href="/catalog.html" class="mobile-menu__link">Каталог</a>
+    <a href="/cart.html" class="mobile-menu__link">Корзина</a>
+    <a href="/account.html" class="mobile-menu__link">Личный кабинет</a>
+  `;
+
+            document.body.appendChild(mobileMenu);
+
+            const closeMenu = mobileMenu.querySelector('.mobile-menu__close');
+
+            burger.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeMenu.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+
+            mobileMenu.querySelectorAll('.mobile-menu__link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+
+            function handleResize() {
+                if (window.innerWidth > 768) {
+                    nav.style.display = 'flex';
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                } else {
+                    nav.style.display = 'none';
+                }
+            }
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        });
+    </script>
+</body>
+
+</html>

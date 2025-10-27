@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог | bevinil.by</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="./catalog-style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header__container">
+      <a href="/" class="header__logo">bevinil.by</a>
+
+      <nav class="header__nav" id="navMenu">
+        <a href="/" class="header__link">Главная</a>
+        <a href="/#preorder" class="header__link">Предзаказ</a>
+        <a href="/#payment" class="header__link">Оплата</a>
+        <a href="/#delivery" class="header__link">Доставка</a>
+        <a href="/#contact" class="header__link">Контакты</a>
+        <a href="/catalog.html" class="header__link">Каталог</a>
+      </nav>
+
+      <div class="header__actions">
+        <a href="/cart.html" class="header__icon" title="Корзина">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+        <a href="/account.html" class="header__icon" title="Личный кабинет">
+          <i class="fa-regular fa-user"></i>
+        </a>
+        <div class="header__burger" id="burgerMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="filters">
+      <input id="searchInput" type="text" placeholder="Поиск..." class="filters__select">
+      <select id="artistFilter" class="filters__select">
+        <option value="">Исполнитель</option>
+      </select>
+      <select id="genreFilter" class="filters__select">
+        <option value="">Жанр</option>
+      </select>
+      <select id="sortFilter" class="filters__select">
+        <option value="">Порядок</option>
+        <option value="asc">Цена ↑</option>
+        <option value="desc">Цена ↓</option>
+      </select>
+    </div>
+
+    <div class="catalog" id="catalog"></div>
+  </main>
+
+  <script>
+    const vinyls = [
+      { artist: "Kovacs", album: "Child Of Sin", genre: "Soul", price: 45, img: "https://a3.cdn.hhv.de/items/images/generated/970x970/00962/962899/1-kovacs-child-of-sin.webp" },
+      { artist: "Dua Lipa", album: "Radical Optimist", genre: "Pop", price: 40, img: "https://www.pepevinyl.com/wp-content/uploads/2024/06/DuaLipa2.jpg" },
+      { artist: "Black Pumas", album: "Black Pumas", genre: "Soul", price: 50, img: "https://i.imgur.com/0P9OaHj.jpeg" },
+      { artist: "Linkin Park", album: "Minutes To Midnight", genre: "Rock", price: 55, img: "https://tse3.mm.bing.net/th/id/OIP.z5F_u9Im1QD0PShtl2pAaQHaHa?cb=12&pid=Api" },
+      { artist: "Diana Ross", album: "The Boss", genre: "Disco", price: 35, img: "https://i.imgur.com/R1XU7zQ.jpeg" },
+      { artist: "Adele", album: "30(2PL)", genre: "Pop", price: 52, img: "https://i.imgur.com/ZXNQU4f.jpeg" },
+      { artist: "Queen", album: "Greatest Hits", genre: "Rock", price: 60, img: "https://www.globalgroove.co.uk/product/n91855_back.jpg.ashx" },
+      { artist: "The Weeknd", album: "Starboy", genre: "R&B", price: 47, img: "https://i.imgur.com/LZ5zL5D.jpeg" },
+    ];
+
+    const catalog = document.getElementById("catalog");
+    const artistSel = document.getElementById("artistFilter");
+    const genreSel = document.getElementById("genreFilter");
+    const sortSel = document.getElementById("sortFilter");
+    const searchInput = document.getElementById("searchInput");
+    const burger = document.getElementById("hamburger");
+    const nav = document.getElementById("desktopMenu");
+
+    [...new Set(vinyls.map(v => v.artist))].forEach(a => artistSel.innerHTML += `<option>${a}</option>`);
+    [...new Set(vinyls.map(v => v.genre))].forEach(g => genreSel.innerHTML += `<option>${g}</option>`);
+
+    function render() {
+      let data = vinyls.filter(v => {
+        return (!artistSel.value || v.artist === artistSel.value)
+          && (!genreSel.value || v.genre === genreSel.value)
+          && (v.artist.toLowerCase().includes(searchInput?.value?.toLowerCase() || '') ||
+            v.album.toLowerCase().includes(searchInput?.value?.toLowerCase() || ''));
+      });
+
+      if (sortSel.value === "asc") data.sort((a, b) => a.price - b.price);
+      if (sortSel.value === "desc") data.sort((a, b) => b.price - a.price);
+
+      catalog.innerHTML = data.map(v => `
+    <div class="card">
+      <img src="${v.img}" alt="${v.album}" class="card__image">
+      <div class="card__content">
+        <h3 class="card__title">${v.artist} – ${v.album}</h3>
+        <div class="card__genre">${v.genre}</div>
+        <div class="card__price">${v.price} BYN</div>
+      </div>
+      <button class="card__btn"><i class="fa-solid fa-plus"></i></button>
+    </div>
+  `).join("");
+    }
+
+    [artistSel, genreSel, sortSel].forEach(el => el.addEventListener("input", render));
+    render();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const burger = document.getElementById('burgerMenu');
+      const nav = document.getElementById('navMenu');
+      const mobileMenu = document.createElement('div');
+
+      mobileMenu.className = 'mobile-menu';
+      mobileMenu.innerHTML = `
+    <div class="mobile-menu__close">&times;</div>
+    <a href="/" class="mobile-menu__link">Главная</a>
+    <a href="/#preorder" class="mobile-menu__link">Предзаказ</a>
+    <a href="/#payment" class="mobile-menu__link">Оплата</a>
+    <a href="/#delivery" class="mobile-menu__link">Доставка</a>
+    <a href="/#contact" class="mobile-menu__link">Контакты</a>
+    <a href="/catalog.html" class="mobile-menu__link">Каталог</a>
+    <a href="/cart.html" class="mobile-menu__link">Корзина</a>
+    <a href="/account.html" class="mobile-menu__link">Личный кабинет</a>
+  `;
+
+      document.body.appendChild(mobileMenu);
+
+      const closeMenu = mobileMenu.querySelector('.mobile-menu__close');
+
+      burger.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      });
+
+      mobileMenu.querySelectorAll('.mobile-menu__link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        });
+      });
+
+      function handleResize() {
+        if (window.innerWidth > 768) {
+          nav.style.display = 'flex';
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        } else {
+          nav.style.display = 'none';
+        }
+      }
+
+      window.addEventListener('resize', handleResize);
+      handleResize();
+    });
+  </script>
+
+</body>
+
+</html>
