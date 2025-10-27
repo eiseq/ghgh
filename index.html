@@ -584,7 +584,6 @@
       const nav = document.getElementById('navMenu');
       const mobileMenu = document.createElement('div');
 
-      // Создаем мобильное меню
       mobileMenu.className = 'mobile-menu';
       mobileMenu.innerHTML = `
     <div class="mobile-menu__close">&times;</div>
@@ -602,7 +601,6 @@
 
       const closeMenu = mobileMenu.querySelector('.mobile-menu__close');
 
-      // Открытие/закрытие мобильного меню
       burger.addEventListener('click', () => {
         mobileMenu.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -613,7 +611,6 @@
         document.body.style.overflow = 'auto';
       });
 
-      // Закрытие меню при клике на ссылку
       mobileMenu.querySelectorAll('.mobile-menu__link').forEach(link => {
         link.addEventListener('click', () => {
           mobileMenu.classList.remove('active');
@@ -621,7 +618,6 @@
         });
       });
 
-      // Адаптивность навигации
       function handleResize() {
         if (window.innerWidth > 768) {
           nav.style.display = 'flex';
